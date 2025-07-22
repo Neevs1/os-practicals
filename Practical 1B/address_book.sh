@@ -76,6 +76,7 @@ modify(){
    
     mv temp.txt records.txt;
      echo "${record[@]}">>records.txt;
+     echo "${record[@]} modified";
 
 
 }
