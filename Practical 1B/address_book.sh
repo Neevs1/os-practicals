@@ -4,15 +4,26 @@ records="records.txt";
 input(){
  echo "Enter ID number";
  read index;
+ if grep -q "$index" records.txt; then
+  echo "ID already exists"; return 1;
+  
+ fi;
  echo "Enter name of the person";
  read name;
  echo "Enter phone number";
  read num;
+ case "$num" in
+[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;;
+*) num=0 ; echo "Invalid phone number entered"; return 1;;
+ esac
  echo "Enter address";
  read address;
  echo -n "Enter Pincode ";
  read pincode;
- 
+ case "$pincode" in
+   [1-9][0-9][0-9][0-9][0-9][0-9]) ;;
+   *) pincode=0 ; echo "Invalid pincode entered"; return 1;;
+esac
  record=($index "|" $name "|" $num "|" $address "|" $pincode);
  echo "Entered record to file"
  echo "${record[@]}">>records.txt;
@@ -25,7 +36,11 @@ output(){
 search(){
  echo -n "Enter index of specific record ";
  read index;
- grep "$index" records.txt;
+ if grep -q "$index" records.txt; then
+  grep "$index" records.txt;
+ else
+  echo "Record not found";
+ fi;
 }
 
 delete(){
@@ -58,10 +73,18 @@ modify(){
   read name;
   echo "Enter phone number";
   read num;
+  case "$num" in
+[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;;
+*) num=0 ; echo "Invalid phone number entered"; return 1;;
+ esac
   echo "Enter address";
   read address;
   echo -n "Enter Pincode ";
   read pincode;
+  case "$pincode" in
+   [1-9][0-9][0-9][0-9][0-9][0-9]) ;;
+   *) pincode=0 ; echo "Invalid pincode entered"; return 1;;
+esac
   
   record=($index "|" $name "|" $num "|" $address "|" $pincode);
   touch temp.txt;
