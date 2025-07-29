@@ -87,8 +87,8 @@ int main(){
      }
     printf("\n");
     }else{
-     printf("Merge sort in parent process\n");
      wait(NULL);
+     printf("Merge sort in parent process\n");
      printf("Child has terminated, executing\n");
      mergeSort(x,0,n-1);
      for(int i=0;i<n;i++){
@@ -99,3 +99,20 @@ int main(){
     free(x);
     return 0;
 }
+/*
+ Enter size of Array
+5
+Enter elements of array
+Enter element 1 : 54
+Enter element 2 : 65
+Enter element 3 : 23
+Enter element 4 : 58
+Enter element 5 : 89
+
+
+Bubble sort in child process
+23 54 58 65 89 
+Merge sort in parent process
+Child has terminated, executing
+23 54 58 65 89 
+*/
