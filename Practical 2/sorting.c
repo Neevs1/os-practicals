@@ -1,9 +1,10 @@
 #include <stdio.h>
-
-
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <stdlib.h>
 
 void bubble_sort(int arr[], int len){
-    
      for(int i=0;i<len;i++){
         for(int j=0;j<len-i-1;j++){
             if(arr[j]>arr[j+1]){
@@ -57,32 +58,44 @@ void merge(int arr[],int l,int m,int u){
 }
 
 void mergeSort(int arr[], int l, int r){
-    
     if (l < r) {
         int m = l + (r - l) / 2;
-
-        // Sort first and second halves
         mergeSort(arr, l, m);
         mergeSort(arr, m + 1, r);
-
         merge(arr, l, m, r);
     }
 }
 
 int main(){
-    int x[] = {6,8,2,1,9};
-    int len = sizeof(x)/sizeof(int);
-     for(int i=0;i<len;i++){
-       printf("%d ",x[i]);
+     int n;
+     printf("Enter size of Array\n");
+     scanf("%d",&n);
+     int *x = (int*)malloc(sizeof(int)*n);
+     printf("Enter elements of array\n");
+     for(int i=0;i<n;i++){
+       printf("Enter element %d : ",(i+1));
+       scanf("%d",&x[i]);
     }
     printf("\n");
-    //bubble_sort(x,len);
-    mergeSort(x,0,len-1);
-    
-    for(int i=0;i<len;i++){
+    pid_t pID;
+    pID = fork();
+    if(pID == 0){
+     printf("Bubble sort in child process\n");
+     bubble_sort(x,n);
+     for(int i=0;i<n;i++){
        printf("%d ",x[i]);
-    }
+     }
     printf("\n");
-
+    }else{
+     printf("Merge sort in parent process\n");
+     wait(NULL);
+     printf("Child has terminated, executing\n");
+     mergeSort(x,0,n-1);
+     for(int i=0;i<n;i++){
+       printf("%d ",x[i]);
+     }
+    printf("\n");
+    }
+    free(x);
     return 0;
 }
